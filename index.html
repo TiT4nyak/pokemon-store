@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ascended Heroes | Pokémon TCG Store</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Oswald:wght@500;700&display=swap');
+
+        :root {
+            --bg-base: #050505;
+            --bg-surface: #121214;
+            --bg-surface-hover: #18181b;
+            --primary: #ff1a1a;
+            --primary-hover: #e60000;
+            --success: #10b981;
+            --text-main: #f4f4f5;
+            --text-muted: #a1a1aa;
+            --border: #27272a;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --shadow-soft: 0 8px 30px rgba(0, 0, 0, 0.6);
+            --shadow-glow: 0 0 20px rgba(255, 26, 26, 0.15);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            line-height: 1.6;
+            /* Dark overlay over a thematic TCG background */
+            background-image: linear-gradient(to bottom, rgba(5, 5, 5, 0.92), rgba(5, 5, 5, 0.98)), url('https://images.unsplash.com/photo-1613771404721-1f92d799e49f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            overflow-x: hidden;
+        }
+
+        /* --- HEADER --- */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(18, 18, 20, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-main);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .cart-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 0.6rem 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+
+        .cart-btn:hover {
+            background: var(--bg-surface-hover);
+            border-color: var(--primary);
+        }
+
+        .cart-count {
+            background: var(--primary);
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        /* --- MAIN HERO PRODUCT --- */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .product-image-container {
+            position: relative;
+            border-radius: var(--radius-md);
+            background: radial-gradient(circle at center, #27272a 0%, #121214 70%);
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.5);
+            transition: var(--transition);
+        }
+
+        .product-image-container:hover {
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.5), var(--shadow-glow);
+        }
+
+        .product-image-container img {
+            max-width: 100%;
+            height: auto;
+            filter: drop-shadow(0 20px 30px rgba(0,0,0,0.8));
+            transform: translateY(0);
+            transition: transform 0.5s ease;
+        }
+
+        .product-image-container:hover img {
+            transform: translateY(-10px);
+        }
+
+        .badge {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: var(--primary);
+            color: #fff;
+            padding: 5px 12px;
+            border-radius: 4px;
+            font-weight: 800;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(255, 26, 26, 0.4);
+            z-index: 10;
+        }
+
+        .product-info h1 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 3rem;
+            line-height: 1.1;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .price-tag {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: baseline;
+            gap: 5px;
+        }
+
+        .price-tag span {
+            font-size: 1rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .description {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            margin-bottom: 30px;
+        }
+
+        .stock-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .pulse-dot {
+            width: 10px;
+            height: 10px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(255, 26, 26, 0.7);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 26, 26, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(255, 26, 26, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 26, 26, 0); }
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: var(--transition);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(255, 26, 26, 0.3);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 26, 26, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        /* --- HITS SECTION --- */
+        .hits-section {
+            margin-top: 80px;
+            margin-bottom: 80px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-header h2 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 2.5rem;
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            margin-top: 10px;
+        }
+
+        .hits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .hit-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            text-align: center;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hit-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .card-visual {
+            aspect-ratio: 63/88;
+            background: linear-gradient(135deg, #1f1f22 0%, #09090b 100%);
+            border: 1px solid #333;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
+
+        /* Holographic effect */
+        .card-visual::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(125deg, 
+                rgba(255,255,255,0) 0%, 
+                rgba(255,255,255,0.05) 40%, 
+                rgba(255,255,255,0.3) 50%, 
+                rgba(255,255,255,0.05) 60%, 
+                rgba(255,255,255,0) 100%);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .hit-card:hover .card-visual::after {
+            transform: translateX(100%);
+        }
+
+        .card-visual span {
+            font-family: 'Oswald', sans-serif;
+            color: #444;
+            font-size: 1.5rem;
+            font-weight: 700;
+            opacity: 0.5;
+        }
+
+        .hit-info h3 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: var(--text-main);
+        }
+
+        .hit-stats {
+            background: #09090b;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+
+        .hit-stats p {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            color: var(--text-muted);
+        }
+
+        .hit-stats p:last-child {
+            margin-bottom: 0;
+        }
+
+        .hit-stats strong {
+            color: var(--text-main);
+        }
+        
+        .hit-stats .price-val {
+            color: var(--success);
+        }
+
+        /* --- CHECKOUT MODAL --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 500px;
+            padding: 40px;
+            position: relative;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 5px;
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            color: var(--primary);
+        }
+
+        .modal-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 15px;
+        }
+
+        .order-summary {
+            background: #09090b;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+
+        .summary-row.total {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed var(--border);
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .payment-info {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .payment-info h4 {
+            color: var(--success);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .clabe-box {
+            background: #050505;
+            padding: 12px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            text-align: center;
+            margin: 10px 0;
+            border: 1px solid #333;
+            user-select: all;
+        }
+
+        .payment-instructions {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        .btn-whatsapp {
+            background-color: #25D366;
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+        }
+
+        .btn-whatsapp:hover {
+            background-color: #1ebc5a;
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 40px 20px;
+            text-align: center;
+            background: var(--bg-surface);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 900px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                padding: 20px;
+            }
+            .product-info h1 {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary);"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                TCG <span>STORE</span>
+            </a>
+            <button class="cart-btn" onclick="openCheckout()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                Carrito
+                <span class="cart-count" id="header-cart-count">0</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="product-grid">
+            <div class="product-image-container">
+                <div class="badge">NUEVO Lote</div>
+                <img src="https://m.media-amazon.com/images/I/71Y-1X5O-5L._AC_SL1500_.jpg" alt="Ascended Heroes Booster Bundle Caja">
+            </div>
+            
+            <div class="product-info">
+                <h1>Ascended Heroes Booster Bundle</h1>
+                <div class="price-tag">
+                    $999 <span>MXN</span>
+                </div>
+                <p class="description">
+                    Prepárate para la batalla definitiva. El nuevo Booster Bundle de <strong>Mega Evolution: Ascended Heroes</strong> te entrega 6 sobres sellados de la expansión más agresiva y esperada del año. Encuentra a Mega Dragonite ex, descubre el poder de la Teracristalización Estelar y eleva tu colección al siguiente nivel.
+                </p>
+                
+                <div class="stock-indicator">
+                    <span class="pulse-dot"></span> Stock limitado disponible
+                </div>
+
+                <button class="btn btn-primary" id="add-to-cart-btn" onclick="addToCart()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    Añadir al Carrito
+                </button>
+            </div>
+        </section>
+
+        <section class="hits-section">
+            <div class="section-header">
+                <h2>Top Chase Cards 🔥</h2>
+                <p>Las cartas más buscadas y valiosas de Ascended Heroes</p>
+            </div>
+            
+            <div class="hits-grid">
+                <div class="hit-card">
+                    <div class="card-visual">
+                        <span>MEGA DRAGONITE</span>
+                    </div>
+                    <div class="hit-info">
+                        <h3>Mega Dragonite ex SAR</h3>
+                        <div class="hit-stats">
+                            <p><span>Probabilidad:</span> <strong>1/86</strong></p>
+                            <p><span>Valor Aprox:</span> <strong class="price-val">$2,400 MXN</strong></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hit-card">
+                    <div class="card-visual">
+                        <span>MEGA GARDEVOIR</span>
+                    </div>
+                    <div class="hit-info">
+                        <h3>Mega Gardevoir ex SAR</h3>
+                        <div class="hit-stats">
+                            <p><span>Probabilidad:</span> <strong>1/72</strong></p>
+                            <p><span>Valor Aprox:</span> <strong class="price-val">$1,700 MXN</strong></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hit-card">
+                    <div class="card-visual">
+                        <span>MEGA LUCARIO</span>
+                    </div>
+                    <div class="hit-info">
+                        <h3>Mega Lucario ex SAR</h3>
+                        <div class="hit-stats">
+                            <p><span>Probabilidad:</span> <strong>1/72</strong></p>
+                            <p><span>Valor Aprox:</span> <strong class="price-val">$1,400 MXN</strong></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hit-card">
+                    <div class="card-visual">
+                        <span>N'S ZEKROM</span>
+                    </div>
+                    <div class="hit-info">
+                        <h3>N's Zekrom ex SIR</h3>
+                        <div class="hit-stats">
+                            <p><span>Probabilidad:</span> <strong>1/60</strong></p>
+                            <p><span>Valor Aprox:</span> <strong class="price-val">$1,000 MXN</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="modal-overlay" id="checkout-modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeCheckout()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            
+            <h2 class="modal-title">Finalizar Compra</h2>
+            
+            <div class="order-summary">
+                <div class="summary-row">
+                    <span>Ascended Heroes Booster Bundle</span>
+                    <span id="summary-qty">x0</span>
+                </div>
+                <div class="summary-row">
+                    <span>Precio unitario</span>
+                    <span>$999 MXN</span>
+                </div>
+                <div class="summary-row total">
+                    <span>TOTAL</span>
+                    <span id="summary-total">$0 MXN</span>
+                </div>
+            </div>
+
+            <div class="payment-info">
+                <h4>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+                    Pago por Transferencia SPEI
+                </h4>
+                <p style="font-size: 0.9rem; margin-bottom: 5px;">Transfiere el total exacto a la siguiente CLABE:</p>
+                <div class="clabe-box">638180010162206396</div>
+                <p class="payment-instructions">Una vez realizado el pago, envía tu comprobante por WhatsApp para confirmar tu envío.</p>
+            </div>
+
+            <button class="btn btn-whatsapp" onclick="processWhatsAppOrder()">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                Confirmar y Enviar Comprobante
+            </button>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 TCG Store. Proyecto independiente.</p>
+    </footer>
+
+    <script>
+        const PRODUCT_PRICE = 999;
+        const PRODUCT_NAME = "Ascended Heroes Booster Bundle";
+        const WHATSAPP_NUMBER = "525525755960";
+        let cartQuantity = 0;
+
+        function addToCart() {
+            cartQuantity++;
+            document.getElementById('header-cart-count').innerText = cartQuantity;
+            
+            // Visual feedback animado
+            const btn = document.getElementById('add-to-cart-btn');
+            const originalHTML = btn.innerHTML;
+            
+            btn.innerHTML = `
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                ¡Agregado!
+            `;
+            btn.style.backgroundColor = "var(--success)";
+            btn.style.boxShadow = "0 4px 15px rgba(16, 185, 129, 0.4)";
+            
+            setTimeout(() => {
+                btn.innerHTML = originalHTML;
+                btn.style.backgroundColor = "";
+                btn.style.boxShadow = "";
+            }, 1500);
+        }
+
+        function openCheckout() {
+            if (cartQuantity === 0) {
+                alert("Tu carrito está vacío. Agrega productos para continuar.");
+                return;
+            }
+            
+            const total = cartQuantity * PRODUCT_PRICE;
+            
+            // Llenar resumen dinámico
+            document.getElementById('summary-qty').innerText = `x${cartQuantity}`;
+            document.getElementById('summary-total').innerText = `$${total.toLocaleString()} MXN`;
+            
+            // Mostrar modal
+            const modal = document.getElementById('checkout-modal');
+            modal.style.display = 'flex';
+            // Pequeño delay para la animación de opacidad
+            setTimeout(() => {
+                modal.classList.add('active');
+            }, 10);
+        }
+
+        function closeCheckout() {
+            const modal = document.getElementById('checkout-modal');
+            modal.classList.remove('active');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        }
+
+        function processWhatsAppOrder() {
+            const total = cartQuantity * PRODUCT_PRICE;
+            const message = `*NUEVO PEDIDO DE COMPRA* 🛍️\n\n*Productos:*\n- ${cartQuantity}x ${PRODUCT_NAME} ($${total.toLocaleString()} MXN)\n\n*Total a Pagar:* $${total.toLocaleString()} MXN\n\n*Método de Pago:* Transferencia SPEI\n*CLABE:* 638180010162206396\n\n_Adjunto mi comprobante de pago para procesar el envío:_`;
+            
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
+            
+            window.open(whatsappUrl, '_blank');
+        }
+    </script>
+</body>
+</html>
